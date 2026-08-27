@@ -1,0 +1,10 @@
+{
+  "version": "1.0.15",
+  "notes": "Version 1.0.15 — device usage analytics",
+  "pub_date": "2026-08-27T00:00:00Z",
+  "platforms": {
+    "windows-x86_64": {
+      "url": "https://lss-oman.netlify.app/releases/LSS_Student_1.0.15_x64-setup.exe"
+    }
+  }
+}

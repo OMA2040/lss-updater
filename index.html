@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSS - Learning Supervision System</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container { max-width: 800px; text-align: center; }
+    .logo {
+      font-size: 4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      margin-bottom: 3rem;
+    }
+    .cards { display: flex; gap: 1.5rem; margin-bottom: 3rem; flex-wrap: wrap; justify-content: center; }
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 1rem;
+      padding: 2rem;
+      flex: 1;
+      min-width: 280px;
+      max-width: 380px;
+      text-align: right;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(16, 185, 129, 0.4); }
+    .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.3rem; margin-bottom: 0.75rem; color: #f1f5f9; }
+    .card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.7; }
+    .card ul { list-style: none; margin-top: 0.75rem; text-align: right; }
+    .card li { font-size: 0.85rem; color: #cbd5e1; padding: 0.2rem 0; }
+    .card li::before { content: "✓ "; color: #10b981; font-weight: bold; }
+    .version {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    footer {
+      margin-top: 2rem;
+      color: #475569;
+      font-size: 0.8rem;
+    }
+    footer a { color: #10b981; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">LSS</div>
+    <p class="subtitle">Learning Supervision System &mdash; نظام الإشراف على التعلم</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🎓</div>
+        <h2>LSS Tutor</h2>
+        <p>تطبيق المعلم للتحكّم في بيئة الفصل والمختبر</p>
+        <ul>
+          <li>لوحة تحكم شاملة</li>
+          <li>بث الشاشة والDistance viewing</li>
+          <li>الاختبارات والحضور</li>
+          <li>التثبيت عن بُعد</li>
+          <li>لوحات فنية متقدمة</li>
+        </ul>
+        <span class="version">v1.0.15</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <h2>LSS Student</h2>
+        <p>عميل خفيف يُثبَّت على أجهزة الطلاب</p>
+        <ul>
+          <li>اتصال تلقائي بالمعلم</li>
+          <li>عرض شاشة المعلم</li>
+          <li>استقبال الملفات</li>
+          <li>التثبيت الصامت</li>
+          <li>قفل الشاشة</li>
+        </ul>
+        <span class="version">v1.0.15</span>
+      </div>
+    </div>
+
+    <footer>
+      <p>Developer: <a href="https://github.com/MUAATH-NASSER">Muaath Nasser Al-Mamari</a></p>
+      <p style="margin-top:0.5rem">Endpoints: <a href="/student/latest.json">Student Update</a> &middot; <a href="/tutor/latest.json">Tutor Update</a></p>
+    </footer>
+  </div>
+</body>
+</html>
