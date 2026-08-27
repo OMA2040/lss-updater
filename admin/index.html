@@ -182,7 +182,7 @@
       PASSWORD = document.getElementById("pwd").value;
       if (!PASSWORD) return;
       try {
-        const res = await fetch("/.netlify/functions/track-stats?password=" + encodeURIComponent(PASSWORD));
+        const res = await fetch("https://cqrzvydxxybfhlmllxeh.functions.supabase.co/track-stats?password=" + encodeURIComponent(PASSWORD));
         if (!res.ok) throw new Error("Invalid password");
         const data = await res.json();
         document.getElementById("login").style.display = "none";
