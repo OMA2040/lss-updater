@@ -1,10 +1,11 @@
 {
-  "version": "1.0.15",
-  "notes": "Version 1.0.15 — device usage analytics",
-  "pub_date": "2026-08-27T00:00:00Z",
+  "version": "1.0.16",
+  "notes": "تحديث تثبيتي مُوقّع",
+  "pub_date": "2026-08-27T18:42:54Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://OMA2040.github.io/lss-updater/releases/LSS_Student_1.0.15_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSN2x1R2pZNGdZcXJKRERUdGt3VDdTWlk1ekRkNlovRWpOc1o4ZGpWMkVDOVJlckFkUzExM0NyRDliTGpkUWIzaDRyamRSMEdFSkR3bkVlU0FuQnl6cERkeWwyRjNSU0E0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3ODU2MTU3CWZpbGU6TFNTIFN0dWRlbnRfMS4wLjE2X3g2NC1zZXR1cC5leGUKbFZvV1YrMFBEbjBCZDlkRnJWTVM1b1VIUlRoUEhhcFc3S2ZMakxad1I0ZjBsMW1WV1picEJWQnFyR0ZkZDBWaDZiVlFkeUxLSnNXdFhRZnlYRFdOQ3c9PQo=",
+      "url": "https://oma2040.github.io/lss-updater/releases/LSS_Student_1.0.16_x64-setup.exe"
     }
   }
 }
