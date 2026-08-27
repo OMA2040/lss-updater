@@ -4,7 +4,7 @@
   "pub_date": "2026-08-27T00:00:00Z",
   "platforms": {
     "windows-x86_64": {
-      "url": "https://lss-oman.netlify.app/releases/LSS_Tutor_1.0.15_x64-setup.exe"
+      "url": "https://OMA2040.github.io/lss-updater/releases/LSS_Tutor_1.0.15_x64-setup.exe"
     }
   }
 }
