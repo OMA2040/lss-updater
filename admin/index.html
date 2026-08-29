@@ -73,6 +73,20 @@
       border-radius: 999px;
       font-size: 0.75rem;
     }
+    .export-btn {
+      display: inline-block;
+      margin-right: 0.5rem;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: none;
+      border-radius: 0.5rem;
+      color: white;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .export-btn:hover { filter: brightness(1.1); }
+    .print-header { display: none; }
     .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
     .stat-card {
       background: rgba(30, 41, 59, 0.8);
@@ -111,6 +125,41 @@
     .activity-row .date { color: #94a3b8; }
     .activity-row .count { color: #34d399; font-weight: bold; }
     footer { text-align: center; color: #475569; font-size: 0.75rem; margin-top: 2rem; }
+
+    @media print {
+      body { background: #ffffff; }
+      .login-box { display: none !important; }
+      .export-btn { display: none !important; }
+      .print-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e2e8f0;
+        color: #0f172a;
+        font-size: 1.3rem;
+        font-weight: 800;
+      }
+      * { color: #0f172a !important; }
+      body { color: #0f172a !important; }
+      .badge { color: #0d9488 !important; }
+      .stat-card {
+        background: #f1f5f9 !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      .stat-card .value { color: #0d9488 !important; }
+      .section h3 { border-bottom-color: #cbd5e1 !important; }
+      .bar-track { background: #e2e8f0 !important; }
+      .bar-fill.tutor { background: #3b82f6 !important; }
+      .bar-fill.student { background: #8b5cf6 !important; }
+      .bar-label { color: #334155 !important; }
+      .activity-row { background: #f8fafc !important; border: 1px solid #eef2f7 !important; }
+      .activity-row .count { color: #0d9488 !important; }
+      footer { color: #475569 !important; }
+    }
   </style>
 </head>
 <body>
@@ -125,6 +174,10 @@
 
   <!-- Dashboard -->
   <div class="dashboard" id="dash">
+    <div class="print-header">
+      <span>📊 تقرير إحصائيات LSS — نظام الإشراف على التعلم</span>
+      <span style="font-size:0.85rem;font-weight:600">تاريخ الإصدار: <span id="printDate"></span></span>
+    </div>
     <div class="header">
       <div>
         <div class="logo">LSS</div>
@@ -132,6 +185,7 @@
       </div>
       <div>
         <span class="badge" id="lastUpdated"></span>
+        <button class="export-btn" onclick="exportPDF()">📄 تصدير PDF</button>
       </div>
     </div>
 
@@ -218,6 +272,8 @@
       document.getElementById("studentTotal").textContent = data.student.total;
       document.getElementById("lastUpdated").textContent =
         "آخر تحديث: " + new Date(data.lastUpdated).toLocaleString("ar");
+      document.getElementById("printDate").textContent =
+        new Date().toLocaleString("ar");
 
       renderBars("tutorVersions", data.tutor.versions, "tutor");
       renderBars("studentVersions", data.student.versions, "student");
@@ -286,6 +342,31 @@
         el.innerHTML = '<div class="activity-row"><span class="date">تعذّر جلب بيانات التنزيلات</span></div>';
       }
     }
+
+    async function exportPDF() {
+      const btn = document.querySelector(".export-btn");
+      btn.textContent = "جارٍ التصدير…";
+      try {
+        if (typeof html2pdf === "undefined") throw new Error("html2pdf not loaded");
+        const opt = {
+          margin: 8,
+          filename: "lss-report.pdf",
+          image: { type: "jpeg", quality: 0.95 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        };
+        btn.style.display = "none";
+        await html2pdf().set(opt).from(document.getElementById("dash")).save();
+        btn.style.display = "";
+      } catch (e) {
+        btn.style.display = "";
+        window.print();
+      } finally {
+        btn.textContent = "📄 تصدير PDF";
+      }
+    }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
