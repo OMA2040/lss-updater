@@ -86,7 +86,6 @@
       cursor: pointer;
     }
     .export-btn:hover { filter: brightness(1.1); }
-    .print-header { display: none; }
     .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
     .stat-card {
       background: rgba(30, 41, 59, 0.8);
@@ -125,41 +124,6 @@
     .activity-row .date { color: #94a3b8; }
     .activity-row .count { color: #34d399; font-weight: bold; }
     footer { text-align: center; color: #475569; font-size: 0.75rem; margin-top: 2rem; }
-
-    @media print {
-      body { background: #ffffff; }
-      .login-box { display: none !important; }
-      .export-btn { display: none !important; }
-      .print-header {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid #e2e8f0;
-        color: #0f172a;
-        font-size: 1.3rem;
-        font-weight: 800;
-      }
-      * { color: #0f172a !important; }
-      body { color: #0f172a !important; }
-      .badge { color: #0d9488 !important; }
-      .stat-card {
-        background: #f1f5f9 !important;
-        border: 1px solid #e2e8f0 !important;
-      }
-      .stat-card .value { color: #0d9488 !important; }
-      .section h3 { border-bottom-color: #cbd5e1 !important; }
-      .bar-track { background: #e2e8f0 !important; }
-      .bar-fill.tutor { background: #3b82f6 !important; }
-      .bar-fill.student { background: #8b5cf6 !important; }
-      .bar-label { color: #334155 !important; }
-      .activity-row { background: #f8fafc !important; border: 1px solid #eef2f7 !important; }
-      .activity-row .count { color: #0d9488 !important; }
-      footer { color: #475569 !important; }
-    }
   </style>
 </head>
 <body>
@@ -174,10 +138,6 @@
 
   <!-- Dashboard -->
   <div class="dashboard" id="dash">
-    <div class="print-header">
-      <span>📊 تقرير إحصائيات LSS — نظام الإشراف على التعلم</span>
-      <span style="font-size:0.85rem;font-weight:600">تاريخ الإصدار: <span id="printDate"></span></span>
-    </div>
     <div class="header">
       <div>
         <div class="logo">LSS</div>
@@ -272,8 +232,7 @@
       document.getElementById("studentTotal").textContent = data.student.total;
       document.getElementById("lastUpdated").textContent =
         "آخر تحديث: " + new Date(data.lastUpdated).toLocaleString("ar");
-      document.getElementById("printDate").textContent =
-        new Date().toLocaleString("ar");
+      STATS = data;
 
       renderBars("tutorVersions", data.tutor.versions, "tutor");
       renderBars("studentVersions", data.student.versions, "student");
@@ -321,18 +280,19 @@
         });
         if (!res.ok) throw new Error(String(res.status));
         const releases = await res.json();
+        DOWNLOADS = [];
         let total = 0;
-        const rows = [];
         for (const rel of releases) {
           for (const a of rel.assets) {
             total += a.download_count;
-            rows.push(`
-              <div class="activity-row">
-                <span class="date">${a.name} <span style="color:#64748b">(${(a.size / 1048576).toFixed(1)} MB)</span></span>
-                <span class="count">${a.download_count} تنزيل</span>
-              </div>`);
+            DOWNLOADS.push({ name: a.name, size: a.size, count: a.download_count });
           }
         }
+        const rows = DOWNLOADS.map((a) => `
+              <div class="activity-row">
+                <span class="date">${a.name} <span style="color:#64748b">(${(a.size / 1048576).toFixed(1)} MB)</span></span>
+                <span class="count">${a.count} تنزيل</span>
+              </div>`);
         document.getElementById("totalDownloads").textContent = total;
         el.innerHTML = rows.length
           ? rows.join("")
@@ -343,30 +303,94 @@
       }
     }
 
-    async function exportPDF() {
+    let STATS = null;
+    let DOWNLOADS = null;
+
+    function exportPDF() {
       const btn = document.querySelector(".export-btn");
-      btn.textContent = "جارٍ التصدير…";
+      btn.textContent = "جارٍ التجهيز…";
       try {
-        if (typeof html2pdf === "undefined") throw new Error("html2pdf not loaded");
-        const opt = {
-          margin: 8,
-          filename: "lss-report.pdf",
-          image: { type: "jpeg", quality: 0.95 },
-          html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-        };
-        btn.style.display = "none";
-        await html2pdf().set(opt).from(document.getElementById("dash")).save();
-        btn.style.display = "";
+        const w = window.open("", "_blank", "width=820,height=1000");
+        if (!w) throw new Error("popup blocked");
+        w.document.write(reportHTML());
+        w.document.title = "lss-report";
+        w.document.close();
+        setTimeout(() => { w.focus(); w.print(); }, 300);
       } catch (e) {
-        btn.style.display = "";
-        window.print();
+        alert("تعذّر فتح نافذة التقرير: " + e.message);
       } finally {
         btn.textContent = "📄 تصدير PDF";
       }
     }
+
+    function versionsRows(versions) {
+      return Object.entries(versions).sort(([a], [b]) => b.localeCompare(a));
+    }
+
+    function tableHtml(headers, rows) {
+      if (!rows.length) return '<p class="empty">لا توجد بيانات</p>';
+      const head = headers.map((h) => `<th>${h}</th>`).join("");
+      const body = rows
+        .map((r) => `<tr>${r.map((c, i) => `<td${i === 0 ? "" : ' class="num"'}>${c}</td>`).join("")}</tr>`)
+        .join("");
+      return `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+    }
+
+    function reportHTML() {
+      const s = STATS || {};
+      const dl = DOWNLOADS || [];
+      const totalDl = dl.reduce((a, x) => a + x.count, 0);
+      const now = new Date().toLocaleString("ar");
+      const lastUpd = s.lastUpdated ? new Date(s.lastUpdated).toLocaleString("ar") : "—";
+      const dlRows = dl.map((a) => [a.name, (a.size / 1048576).toFixed(1) + " MB", String(a.count)]);
+      return `<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8">
+<title>تقرير إحصائيات LSS</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; color: #0f172a; margin: 0; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .band { background: #0f172a; color: #fff; border-radius: 8px; padding: 12px 14px; font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 14px; }
+  h1 { font-size: 20px; text-align: center; margin: 0 0 2px; color: #0d9488; }
+  .sub { text-align: center; color: #475569; font-size: 12px; margin: 0 0 16px; }
+  h2 { font-size: 15px; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 2px solid #10b981; color: #0d9488; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 6px; }
+  th, td { border: 1px solid #cbd5e1; padding: 6px 10px; text-align: right; }
+  th { background: #0f172a; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  td.num { text-align: left; direction: ltr; font-variant-numeric: tabular-nums; }
+  .empty { color: #94a3b8; font-size: 12px; }
+  .footer { text-align: center; color: #94a3b8; font-size: 10px; margin-top: 20px; }
+</style></head><body><div class="wrap">
+<div class="band">تقرير إحصائيات LSS — نظام الإشراف على التعلم</div>
+<h1>نظرة عامة</h1>
+<p class="sub">تاريخ إصدار التقرير: ${now} &middot; آخر تحديث للبيانات: ${lastUpd}</p>
+
+<h2>1) ملخص النسخ الحية</h2>
+${tableHtml(["البند", "العدد"], [
+  ["النسخ الحية (آخر 30 يوم)", String(s.liveDevices ?? 0)],
+  ["إجمالي الأجهزة الفريدة", String(s.totalDevices ?? 0)],
+  ["أجهزة Tutor الحية", String(s.liveTutor ?? 0)],
+  ["أجهزة Student الحية", String(s.liveStudent ?? 0)],
+  ["الأجهزة المستبعدة", String(s.excludedDevices ?? 0)],
+  ["إجمالي التنزيلات", String(totalDl)],
+])}
+
+<h2>2) التوزيع حسب الإصدار — Tutor</h2>
+${tableHtml(["الإصدار", "عدد الأجهزة"], versionsRows((s.tutor && s.tutor.versions) || {}).map(([v, c]) => [v, String(c)]))}
+
+<h2>3) التوزيع حسب الإصدار — Student</h2>
+${tableHtml(["الإصدار", "عدد الأجهزة"], versionsRows((s.student && s.student.versions) || {}).map(([v, c]) => [v, String(c)]))}
+
+<h2>4) النشاط اليومي (آخر 7 أيام)</h2>
+${tableHtml(["التاريخ", "عدد الطلبات"], versionsRows(s.dailyActivity || {}).map(([dt, c]) => [dt, String(c)]))}
+
+<h2>5) التنزيلات من GitHub Releases</h2>
+${tableHtml(["الملف", "الحجم", "عدد التنزيلات"], dlRows)}
+
+<p class="footer">المصدر: Supabase Edge Functions + GitHub Releases &middot; oma2040.github.io/lss-updater</p>
+</div></body></html>`;
+    }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
