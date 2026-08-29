@@ -1,11 +1,11 @@
 {
-    "version":  "1.0.17",
-    "notes":  "بانر تحديث تلقائي + معرّف جهاز مستقر للتتبع",
-    "pub_date":  "2026-08-29T17:06:10Z",
+    "version":  "1.0.18",
+    "notes":  "نسخة 1.0.18: عداد النسخ الحية يتحدث تلقائيا عند إلغاء التثبيت + معرّف جهاز مستقر للتتبع",
+    "pub_date":  "2026-08-29T13:42:44Z",
     "platforms":  {
                       "windows-x86_64":  {
-                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSN2x1R2pZNGdZcWtoMU5iWmJBbjU4Y0NJakZYUlNJRWpJcDB1Rmhlb2Z1V1ZBS213SkZHMUVpN3FzY0JrYzFybHc0QUxzWEJPMXR5Nm5jYjlqZ3FmRTB0bmowVVJhYXd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MDA4NjEwCWZpbGU6TFNTIFN0dWRlbnRfMS4wLjE3X3g2NC1zZXR1cC5leGUKVW80dDUwNDE4MkduVnludVkwNTVFVkw4SFBRZkU1aUNoakY5QWdFQU9jZ25RM2NkckFRTnNZWkpBTCtqUC9HYlhNU24wQlJjSGNDWUFRY3BCN1UvQnc9PQo=",
-                                             "url":  "https://github.com/OMA2040/lss-updater/releases/download/v1.0.17/LSS.Student_1.0.17_x64-setup.exe"
+                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSN2x1R2pZNGdZcWlNYkFkdDFVVG9RWWpHNlNqbUtpR3d0RU81K0duWFZhWnBnQzR1NVBvZGJIRTNJT2JGaGR5L0YwL0lqVDJBNCtNL0tXdWNIUzZSMkpMQ3dMWklVR3dRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MDEwODM0CWZpbGU6TFNTIFN0dWRlbnRfMS4wLjE4X3g2NC1zZXR1cC5leGUKUWordTkrMUx6UWdzRTI2OTBleTZhcVI4M01RRzBFMFErMHVpQzAvUmJxNEF5dkh0eWYzK0JRaTViU3U4ZGMxR0ZxM0R4aXhxMEhianJKTVRiRmRLQmc9PQo=",
+                                             "url":  "https://github.com/OMA2040/lss-updater/releases/download/v1.0.18/LSS.Student_1.0.18_x64-setup.exe"
                                          }
                   }
 }

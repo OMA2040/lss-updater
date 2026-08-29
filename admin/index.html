@@ -141,6 +141,10 @@
         <div class="label">إجمالي الأجهزة الفريدة</div>
       </div>
       <div class="stat-card">
+        <div class="value" id="liveDevices">—</div>
+        <div class="label">النسخ الحية (آخر 30 يوم)</div>
+      </div>
+      <div class="stat-card">
         <div class="value" id="tutorTotal" style="color:#60a5fa">—</div>
         <div class="label"> أجهزة Tutor</div>
       </div>
@@ -209,6 +213,7 @@
 
     function render(data) {
       document.getElementById("totalDevices").textContent = data.totalDevices;
+      document.getElementById("liveDevices").textContent = data.liveDevices;
       document.getElementById("tutorTotal").textContent = data.tutor.total;
       document.getElementById("studentTotal").textContent = data.student.total;
       document.getElementById("lastUpdated").textContent =
