@@ -1,11 +1,11 @@
 {
-  "version": "1.0.16",
-  "notes": "تحديث تثبيتي مُوقّع",
-  "pub_date": "2026-08-27T18:42:54Z",
-  "platforms": {
-    "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSN2x1R2pZNGdZcXJKRERUdGt3VDdTWlk1ekRkNlovRWpOc1o4ZGpWMkVDOVJlckFkUzExM0NyRDliTGpkUWIzaDRyamRSMEdFSkR3bkVlU0FuQnl6cERkeWwyRjNSU0E0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg3ODU2MTU3CWZpbGU6TFNTIFN0dWRlbnRfMS4wLjE2X3g2NC1zZXR1cC5leGUKbFZvV1YrMFBEbjBCZDlkRnJWTVM1b1VIUlRoUEhhcFc3S2ZMakxad1I0ZjBsMW1WV1picEJWQnFyR0ZkZDBWaDZiVlFkeUxLSnNXdFhRZnlYRFdOQ3c9PQo=",
-      "url": "https://oma2040.github.io/lss-updater/releases/LSS_Student_1.0.16_x64-setup.exe"
-    }
-  }
+    "version":  "1.0.17",
+    "notes":  "بانر تحديث تلقائي + معرّف جهاز مستقر للتتبع",
+    "pub_date":  "2026-08-29T17:06:10Z",
+    "platforms":  {
+                      "windows-x86_64":  {
+                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSN2x1R2pZNGdZcWtoMU5iWmJBbjU4Y0NJakZYUlNJRWpJcDB1Rmhlb2Z1V1ZBS213SkZHMUVpN3FzY0JrYzFybHc0QUxzWEJPMXR5Nm5jYjlqZ3FmRTB0bmowVVJhYXd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4MDA4NjEwCWZpbGU6TFNTIFN0dWRlbnRfMS4wLjE3X3g2NC1zZXR1cC5leGUKVW80dDUwNDE4MkduVnludVkwNTVFVkw4SFBRZkU1aUNoakY5QWdFQU9jZ25RM2NkckFRTnNZWkpBTCtqUC9HYlhNU24wQlJjSGNDWUFRY3BCN1UvQnc9PQo=",
+                                             "url":  "https://github.com/OMA2040/lss-updater/releases/download/v1.0.17/LSS.Student_1.0.17_x64-setup.exe"
+                                         }
+                  }
 }

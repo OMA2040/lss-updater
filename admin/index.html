@@ -148,6 +148,10 @@
         <div class="value" id="studentTotal" style="color:#a78bfa">—</div>
         <div class="label">أجهزة Student</div>
       </div>
+      <div class="stat-card">
+        <div class="value" id="totalDownloads" style="color:#fbbf24">—</div>
+        <div class="label">إجمالي التنزيلات</div>
+      </div>
     </div>
 
     <div class="section">
@@ -169,9 +173,14 @@
       <div class="activity-list" id="dailyActivity"></div>
     </div>
 
+    <div class="section">
+      <h3>📥 عدد التنزيلات (GitHub Releases)</h3>
+      <div class="activity-list" id="downloadList"></div>
+    </div>
+
     <footer>
-      <p>LSS Update Tracker — Netlify Functions + Supabase</p>
-      <p style="margin-top:0.3rem">muaath-nasser.com</p>
+      <p>LSS Update Tracker — Supabase Edge Functions + GitHub Releases</p>
+      <p style="margin-top:0.3rem">oma2040.github.io/lss-updater</p>
     </footer>
   </div>
 
@@ -188,6 +197,7 @@
         document.getElementById("login").style.display = "none";
         document.getElementById("dash").style.display = "block";
         render(data);
+        loadDownloads();
       } catch (e) {
         document.getElementById("loginErr").textContent = "كلمة المرور غير صحيحة";
       }
@@ -239,6 +249,37 @@
           <span class="date">${date}</span>
           <span class="count">${count} طلب</span>
         </div>`).join("");
+    }
+
+    async function loadDownloads() {
+      const el = document.getElementById("downloadList");
+      document.getElementById("totalDownloads").textContent = "…";
+      try {
+        const res = await fetch("https://api.github.com/repos/OMA2040/lss-updater/releases", {
+          headers: { Accept: "application/vnd.github+json" },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        const releases = await res.json();
+        let total = 0;
+        const rows = [];
+        for (const rel of releases) {
+          for (const a of rel.assets) {
+            total += a.download_count;
+            rows.push(`
+              <div class="activity-row">
+                <span class="date">${a.name} <span style="color:#64748b">(${(a.size / 1048576).toFixed(1)} MB)</span></span>
+                <span class="count">${a.download_count} تنزيل</span>
+              </div>`);
+          }
+        }
+        document.getElementById("totalDownloads").textContent = total;
+        el.innerHTML = rows.length
+          ? rows.join("")
+          : '<div class="activity-row"><span class="date">لا توجد تنزيلات بعد</span></div>';
+      } catch (e) {
+        document.getElementById("totalDownloads").textContent = "—";
+        el.innerHTML = '<div class="activity-row"><span class="date">تعذّر جلب بيانات التنزيلات</span></div>';
+      }
     }
   </script>
 </body>
